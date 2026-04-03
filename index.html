@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zahira Nuñez — Marketing Digital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Serif+Display:ital@0;1&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #080808;
+    --white: #f4efe8;
+    --lavender: #baaac7;
+    --steel: #aab8c7;
+    --peach: #fbebe6;
+    --mid: #1a1a1a;
+    --muted: #777;
+  }
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'Manrope', sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSOR */
+  .cursor { width:10px; height:10px; background:var(--lavender); border-radius:50%; position:fixed; top:0; left:0; pointer-events:none; z-index:9999; mix-blend-mode:difference; }
+  .cursor-ring { width:36px; height:36px; border:1.5px solid var(--lavender); border-radius:50%; position:fixed; top:0; left:0; pointer-events:none; z-index:9998; transition:transform 0.4s cubic-bezier(0.16,1,0.3,1),width 0.3s,height 0.3s,opacity 0.3s; opacity:0.6; }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; justify-content:space-between; align-items:center; padding:28px 60px; }
+  nav::before { content:''; position:absolute; inset:0; background:linear-gradient(to bottom,rgba(8,8,8,0.92) 0%,transparent 100%); pointer-events:none; }
+  .nav-logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:0.08em; color:var(--white); text-decoration:none; position:relative; z-index:1; }
+  .nav-links { display:flex; gap:36px; list-style:none; position:relative; z-index:1; align-items:center; }
+  .nav-links a { font-size:0.76rem; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); text-decoration:none; transition:color 0.3s; }
+  .nav-links a:hover { color:var(--lavender); }
+  .nav-behance { border:1px solid rgba(186,170,199,0.3) !important; color:var(--lavender) !important; padding:7px 16px; border-radius:100px; transition:background 0.3s,border-color 0.3s !important; }
+  .nav-behance:hover { background:rgba(186,170,199,0.1) !important; border-color:var(--lavender) !important; }
+
+  /* HERO */
+  .hero { min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; padding:0 60px 80px; position:relative; overflow:hidden; }
+  .hero-bg { position:absolute; inset:0; background:radial-gradient(ellipse 60% 50% at 70% 30%,rgba(186,170,199,0.06) 0%,transparent 60%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(251,235,230,0.04) 0%,transparent 60%); pointer-events:none; }
+  .hero-tag { font-size:0.72rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--lavender); margin-bottom:24px; display:flex; align-items:center; gap:12px; opacity:0; animation:fadeUp 0.8s ease 0.3s forwards; }
+  .hero-tag::before { content:''; display:block; width:40px; height:1px; background:var(--lavender); }
+  .hero-title { font-family:'DM Serif Display',serif; font-size:clamp(4.5rem,12vw,11rem); line-height:0.9; letter-spacing:-0.02em; color:var(--white); opacity:0; animation:fadeUp 1s ease 0.5s forwards; }
+  .hero-title em { font-style:italic; color:var(--lavender); }
+  .hero-bottom { display:flex; justify-content:space-between; align-items:flex-end; margin-top:48px; padding-top:32px; border-top:1px solid rgba(186,170,199,0.12); opacity:0; animation:fadeUp 0.8s ease 0.8s forwards; }
+  .hero-desc { font-size:0.95rem; color:var(--muted); max-width:320px; line-height:1.7; font-weight:300; }
+  .hero-scroll { display:flex; align-items:center; gap:12px; font-size:0.72rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); font-weight:500; }
+  .hero-scroll-line { width:60px; height:1px; background:var(--muted); position:relative; overflow:hidden; }
+  .hero-scroll-line::after { content:''; position:absolute; inset:0; background:var(--lavender); transform:translateX(-100%); animation:scanLine 2s ease-in-out infinite; }
+  .hero-stats { display:flex; gap:48px; }
+  .hero-stat-num { font-family:'Syne',sans-serif; font-size:2.2rem; font-weight:800; color:var(--peach); line-height:1; }
+  .hero-stat-label { font-size:0.7rem; color:var(--muted); letter-spacing:0.1em; text-transform:uppercase; margin-top:4px; }
+
+  /* MARQUEE */
+  .marquee-wrap { overflow:hidden; border-top:1px solid rgba(255,255,255,0.06); border-bottom:1px solid rgba(255,255,255,0.06); background:var(--mid); padding:18px 0; }
+  .marquee-track { display:flex; animation:marquee 22s linear infinite; white-space:nowrap; width:max-content; }
+  .marquee-item { font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); padding:0 40px; display:flex; align-items:center; gap:40px; }
+  .marquee-dot { width:5px; height:5px; background:var(--lavender); border-radius:50%; flex-shrink:0; }
+
+  /* SECTIONS */
+  section { padding:120px 60px; }
+  .section-label { font-size:0.7rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--lavender); margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+  .section-label::before { content:''; display:block; width:24px; height:1px; background:var(--lavender); }
+
+  /* ABOUT */
+  .about { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+  .about-heading { font-family:'DM Serif Display',serif; font-size:clamp(2.5rem,5vw,4.5rem); line-height:1.05; color:var(--white); margin-bottom:32px; }
+  .about-heading em { font-style:italic; color:var(--lavender); }
+  .about-text { font-size:1rem; color:var(--muted); line-height:1.9; font-weight:300; margin-bottom:24px; }
+  .about-badge { display:inline-flex; align-items:center; gap:8px; background:rgba(186,170,199,0.08); border:1px solid rgba(186,170,199,0.22); color:var(--lavender); font-size:0.75rem; font-weight:600; letter-spacing:0.1em; padding:8px 16px; border-radius:100px; text-transform:uppercase; }
+  .about-right { padding-top:60px; }
+  .about-skills-title { font-family:'Syne',sans-serif; font-size:0.75rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); margin-bottom:24px; }
+  .skills-list { display:flex; flex-direction:column; gap:16px; }
+  .skill-row { display:flex; align-items:center; justify-content:space-between; padding-bottom:16px; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .skill-name { font-family:'Syne',sans-serif; font-weight:700; font-size:0.9rem; color:var(--white); }
+  .skill-sub { font-size:0.72rem; color:var(--muted); margin-top:2px; }
+  .skill-bar-wrap { width:120px; height:2px; background:rgba(255,255,255,0.06); border-radius:2px; overflow:hidden; }
+  .skill-bar { height:100%; background:linear-gradient(to right,var(--lavender),var(--steel)); border-radius:2px; transform:scaleX(0); transform-origin:left; transition:transform 1.2s cubic-bezier(0.16,1,0.3,1); }
+
+  /* TOOLS */
+  .tools-section { background:var(--mid); }
+  .tools-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:60px; }
+  .tool-card { background:var(--black); padding:40px 36px; border:1px solid rgba(255,255,255,0.03); transition:background 0.3s,border-color 0.3s; cursor:none; position:relative; overflow:hidden; }
+  .tool-card::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(to right,var(--lavender),var(--steel)); transform:scaleX(0); transform-origin:left; transition:transform 0.4s ease; }
+  .tool-card:hover { background:#111; border-color:rgba(186,170,199,0.12); }
+  .tool-card:hover::after { transform:scaleX(1); }
+  .tool-icon { font-size:1.8rem; margin-bottom:20px; display:block; }
+  .tool-name { font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; color:var(--white); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.05em; }
+  .tool-desc { font-size:0.78rem; color:var(--muted); line-height:1.6; }
+  .tool-tag { display:inline-block; margin-top:16px; font-size:0.65rem; font-weight:600; letter-spacing:0.15em; text-transform:uppercase; color:var(--steel); background:rgba(170,184,199,0.08); padding:4px 10px; border-radius:4px; }
+
+  /* PROJECTS */
+  .projects-header { display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:70px; }
+  .projects-title { font-family:'DM Serif Display',serif; font-size:clamp(2.2rem,4vw,3.8rem); line-height:1.1; color:var(--white); }
+  .projects-title em { font-style:italic; color:var(--lavender); }
+  .projects-count { font-family:'Syne',sans-serif; font-size:5rem; font-weight:800; color:rgba(255,255,255,0.03); line-height:1; letter-spacing:-0.05em; }
+  .project-details { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+  .pdetail-card { background:var(--mid); border:1px solid rgba(255,255,255,0.04); padding:40px 36px; position:relative; overflow:hidden; transition:border-color 0.3s,background 0.3s; cursor:none; }
+  .pdetail-card:hover { border-color:rgba(186,170,199,0.16); background:#1f1f1f; }
+  .pdetail-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--lavender),var(--steel)); transform:scaleY(0); transform-origin:bottom; transition:transform 0.5s ease; }
+  .pdetail-card:hover::before { transform:scaleY(1); }
+  .pdetail-label { font-size:0.65rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--lavender); margin-bottom:20px; }
+  .pdetail-name { font-family:'DM Serif Display',serif; font-size:1.7rem; color:var(--white); margin-bottom:12px; line-height:1.1; }
+  .pdetail-name em { font-style:italic; }
+  .pdetail-desc { font-size:0.82rem; color:var(--muted); line-height:1.8; margin-bottom:20px; font-weight:300; }
+  .pdetail-features { display:flex; flex-direction:column; gap:8px; margin-top:16px; }
+  .pdetail-feature { font-size:0.75rem; color:var(--muted); display:flex; align-items:center; gap:8px; }
+  .pdetail-feature::before { content:''; width:14px; height:1px; background:var(--steel); flex-shrink:0; }
+  .pdetail-palette { display:flex; gap:8px; margin-top:20px; }
+  .pcolor { width:26px; height:26px; border-radius:50%; border:2px solid rgba(255,255,255,0.08); }
+  .expand-btn { display:inline-flex; align-items:center; gap:8px; margin-top:24px; font-family:'Syne',sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--peach); background:rgba(251,235,230,0.06); border:1px solid rgba(251,235,230,0.2); padding:9px 18px; border-radius:100px; cursor:none; transition:background 0.3s,border-color 0.3s; }
+  .expand-btn:hover { background:rgba(251,235,230,0.12); border-color:rgba(251,235,230,0.35); }
+
+  /* MODAL */
+  .modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.88); backdrop-filter:blur(16px); z-index:1000; display:flex; align-items:center; justify-content:center; padding:40px; opacity:0; pointer-events:none; transition:opacity 0.4s ease; }
+  .modal-overlay.open { opacity:1; pointer-events:all; }
+  .modal { background:#111; border:1px solid rgba(186,170,199,0.14); border-radius:4px; width:100%; max-width:820px; max-height:88vh; overflow-y:auto; transform:translateY(30px); transition:transform 0.4s cubic-bezier(0.16,1,0.3,1); scrollbar-width:thin; scrollbar-color:rgba(186,170,199,0.15) transparent; }
+  .modal-overlay.open .modal { transform:translateY(0); }
+  .modal-header { padding:40px 48px 32px; border-bottom:1px solid rgba(255,255,255,0.06); display:flex; justify-content:space-between; align-items:flex-start; position:sticky; top:0; background:#111; z-index:2; }
+  .modal-close { width:36px; height:36px; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:none; font-size:1rem; color:var(--muted); transition:background 0.2s,color 0.2s; flex-shrink:0; }
+  .modal-close:hover { background:rgba(251,235,230,0.1); color:var(--peach); }
+  .modal-label { font-size:0.65rem; font-weight:600; letter-spacing:0.2em; text-transform:uppercase; color:var(--lavender); margin-bottom:8px; }
+  .modal-title { font-family:'DM Serif Display',serif; font-size:2.2rem; color:var(--white); line-height:1.1; }
+  .modal-title em { font-style:italic; color:var(--lavender); }
+  .modal-body { padding:40px 48px 52px; }
+  .modal-section { margin-bottom:36px; }
+  .modal-section-title { font-family:'Syne',sans-serif; font-size:0.73rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; color:var(--steel); margin-bottom:16px; padding-bottom:10px; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .modal-text { font-size:0.88rem; color:var(--muted); line-height:1.85; font-weight:300; }
+  .modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .modal-pill { background:rgba(186,170,199,0.06); border:1px solid rgba(186,170,199,0.12); padding:12px 16px; border-radius:4px; font-size:0.78rem; color:var(--white); display:flex; align-items:center; gap:10px; }
+  .modal-pill-icon { color:var(--lavender); }
+  .modal-kpi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .modal-kpi { background:rgba(170,184,199,0.05); border:1px solid rgba(170,184,199,0.1); padding:20px; border-radius:4px; text-align:center; }
+  .modal-kpi-num { font-family:'Syne',sans-serif; font-size:1.7rem; font-weight:800; color:var(--peach); line-height:1; margin-bottom:6px; }
+  .modal-kpi-label { font-size:0.68rem; color:var(--muted); letter-spacing:0.06em; }
+  .modal-tag-list { display:flex; flex-wrap:wrap; gap:8px; }
+  .modal-tag { font-size:0.67rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase; padding:5px 12px; border-radius:100px; background:rgba(255,255,255,0.04); color:var(--muted); border:1px solid rgba(255,255,255,0.07); }
+  .modal-palette { display:flex; gap:10px; align-items:center; }
+  .modal-pcolor { width:30px; height:30px; border-radius:50%; border:2px solid rgba(255,255,255,0.1); }
+
+  /* CONTACT */
+  .contact-section { background:var(--mid); display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  .contact-heading { font-family:'DM Serif Display',serif; font-size:clamp(3rem,6vw,6rem); line-height:0.95; color:var(--white); margin-bottom:32px; }
+  .contact-heading em { font-style:italic; color:var(--lavender); }
+  .contact-sub { font-size:0.95rem; color:var(--muted); line-height:1.8; font-weight:300; margin-bottom:48px; }
+  .contact-links { display:flex; flex-direction:column; }
+  .contact-link { display:flex; align-items:center; gap:16px; font-size:0.85rem; color:var(--muted); text-decoration:none; transition:color 0.3s; padding:16px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .contact-link:hover { color:var(--peach); }
+  .contact-link-icon { width:36px; height:36px; background:rgba(255,255,255,0.04); border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; transition:background 0.3s; }
+  .contact-link:hover .contact-link-icon { background:rgba(251,235,230,0.08); }
+  .contact-right { display:flex; flex-direction:column; gap:16px; }
+  .cta-big { display:flex; align-items:center; justify-content:center; background:var(--peach); color:#1a1a1a; font-family:'Syne',sans-serif; font-weight:800; font-size:0.95rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; padding:24px 40px; border-radius:4px; transition:transform 0.3s,box-shadow 0.3s; cursor:none; gap:12px; }
+  .cta-big:hover { transform:translateY(-3px); box-shadow:0 20px 60px rgba(251,235,230,0.14); }
+  .cta-behance { display:flex; align-items:center; justify-content:center; background:transparent; color:var(--lavender); font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; letter-spacing:0.1em; text-transform:uppercase; text-decoration:none; padding:18px 40px; border-radius:4px; border:1px solid rgba(186,170,199,0.25); transition:background 0.3s,border-color 0.3s; cursor:none; gap:12px; }
+  .cta-behance:hover { background:rgba(186,170,199,0.07); border-color:rgba(186,170,199,0.4); }
+  .availability { text-align:center; font-size:0.72rem; color:var(--muted); letter-spacing:0.1em; display:flex; align-items:center; justify-content:center; gap:8px; }
+  .avail-dot { width:7px; height:7px; background:#7ddba4; border-radius:50%; animation:pulse 2s ease infinite; }
+
+  footer { padding:40px 60px; display:flex; justify-content:space-between; align-items:center; border-top:1px solid rgba(255,255,255,0.05); }
+  .footer-copy { font-size:0.72rem; color:rgba(255,255,255,0.18); letter-spacing:0.08em; }
+  .footer-name { font-family:'Syne',sans-serif; font-weight:800; font-size:0.85rem; color:rgba(255,255,255,0.3); letter-spacing:0.05em; }
+  .divider { height:1px; background:rgba(255,255,255,0.05); margin:0 60px; }
+
+  @keyframes fadeUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  @keyframes scanLine { 0%{transform:translateX(-100%)} 50%{transform:translateX(100%)} 100%{transform:translateX(100%)} }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(125,219,164,0.4)} 50%{box-shadow:0 0 0 6px rgba(125,219,164,0)} }
+
+  .reveal { opacity:0; transform:translateY(32px); transition:opacity 0.8s ease,transform 0.8s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+  .reveal-delay-1 { transition-delay:0.1s; }
+  .reveal-delay-2 { transition-delay:0.2s; }
+  .reveal-delay-3 { transition-delay:0.3s; }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">ZN.</a>
+  <ul class="nav-links">
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#herramientas">Herramientas</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="https://www.behance.net/zahiranuez" target="_blank" class="nav-behance">↗ Behance</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-tag">Marketing Digital — Buenos Aires, ARG</div>
+  <h1 class="hero-title">Zahira<br><em>Nuñez.</em></h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">Estratega de contenido y marketing digital. Construyo marcas con propósito, creatividad y datos.</p>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">3+</div><div class="hero-stat-label">Proyectos</div></div>
+      <div><div class="hero-stat-num">6</div><div class="hero-stat-label">Herramientas</div></div>
+    </div>
+    <div class="hero-scroll"><div class="hero-scroll-line"></div>Scroll</div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-wrap">
+  <div class="marquee-track">
+    <span class="marquee-item">Marketing Digital <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Diseño de Marca <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Redes Sociales <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Google Ads <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Estrategia de Contenido <span class="marquee-dot"></span></span>
+    <span class="marquee-item">UI / UX <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Análisis de Datos <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Edición de Video <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Marketing Digital <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Diseño de Marca <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Redes Sociales <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Google Ads <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Estrategia de Contenido <span class="marquee-dot"></span></span>
+    <span class="marquee-item">UI / UX <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Análisis de Datos <span class="marquee-dot"></span></span>
+    <span class="marquee-item">Edición de Video <span class="marquee-dot"></span></span>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="sobre-mi">
+  <div class="about">
+    <div class="about-left reveal">
+      <div class="section-label">Sobre mí</div>
+      <h2 class="about-heading">Creo marcas que <em>importan.</em></h2>
+      <p class="about-text">Soy Zahira Agostina Nuñez, técnica en Comunicación y Marketing Digital. Me especializo en construir identidades digitales con coherencia visual, estrategia y narrativa auténtica.</p>
+      <p class="about-text">Trabajo con marcas y emprendedores que quieren dejar huella en el entorno digital — desde la estrategia hasta la ejecución creativa.</p>
+      <span class="about-badge">✦ Disponible para nuevos proyectos</span>
+    </div>
+    <div class="about-right reveal reveal-delay-2">
+      <div class="about-skills-title">Áreas de expertise</div>
+      <div class="skills-list">
+        <div class="skill-row">
+          <div><div class="skill-name">Estrategia de Contenido</div><div class="skill-sub">Planificación, calendario editorial, storytelling</div></div>
+          <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.92"></div></div>
+        </div>
+        <div class="skill-row">
+          <div><div class="skill-name">Identidad de Marca</div><div class="skill-sub">Branding, paleta, tipografía, voz</div></div>
+          <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.88"></div></div>
+        </div>
+        <div class="skill-row">
+          <div><div class="skill-name">Paid Media</div><div class="skill-sub">Meta Ads, Google Ads, campañas</div></div>
+          <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.82"></div></div>
+        </div>
+        <div class="skill-row">
+          <div><div class="skill-name">Diseño & Producción</div><div class="skill-sub">Illustrator, Premiere, Figma</div></div>
+          <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.85"></div></div>
+        </div>
+        <div class="skill-row">
+          <div><div class="skill-name">Análisis de Datos</div><div class="skill-sub">Tableau, métricas, reporting</div></div>
+          <div class="skill-bar-wrap"><div class="skill-bar" data-width="0.75"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TOOLS -->
+<section class="tools-section" id="herramientas">
+  <div class="section-label reveal">Herramientas</div>
+  <div class="tools-grid reveal reveal-delay-1">
+    <div class="tool-card">
+      <span class="tool-icon">🎬</span>
+      <div class="tool-name">Adobe Premiere</div>
+      <div class="tool-desc">Edición de video profesional para contenido de marca, reels y campañas audiovisuales.</div>
+      <span class="tool-tag">Producción</span>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">✏️</span>
+      <div class="tool-name">Adobe Illustrator</div>
+      <div class="tool-desc">Diseño gráfico vectorial para identidades visuales, logotipos y materiales de comunicación.</div>
+      <span class="tool-tag">Diseño</span>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">⬡</span>
+      <div class="tool-name">Figma</div>
+      <div class="tool-desc">Diseño de interfaces y prototipos interactivos centrados en la experiencia de usuario.</div>
+      <span class="tool-tag">UI / UX</span>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">📊</span>
+      <div class="tool-name">Tableau Public</div>
+      <div class="tool-desc">Visualización y análisis de datos para tomar decisiones estratégicas basadas en métricas.</div>
+      <span class="tool-tag">Analytics</span>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">∞</span>
+      <div class="tool-name">Meta Business</div>
+      <div class="tool-desc">Gestión integral de redes sociales, campañas pagas y análisis de audiencias en el ecosistema Meta.</div>
+      <span class="tool-tag">Social Media</span>
+    </div>
+    <div class="tool-card">
+      <span class="tool-icon">◈</span>
+      <div class="tool-name">Google Ads</div>
+      <div class="tool-desc">Creación y optimización de campañas de búsqueda, display y YouTube para maximizar el ROI.</div>
+      <span class="tool-tag">Paid Media</span>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="proyectos">
+  <div class="projects-header reveal">
+    <div>
+      <div class="section-label">Proyectos</div>
+      <h2 class="projects-title">Trabajos<br><em>seleccionados.</em></h2>
+    </div>
+    <div class="projects-count">03</div>
+  </div>
+  <div class="project-details reveal">
+
+    <!-- 2Z Style -->
+    <div class="pdetail-card">
+      <div class="pdetail-label">Proyecto 01 — Indumentaria</div>
+      <div class="pdetail-name"><em>2Z' Style</em></div>
+      <div class="pdetail-desc">Marca digital de moda circular argentina. Identidad juvenil, fresca y comprometida con el medio ambiente.</div>
+      <div class="pdetail-features">
+        <div class="pdetail-feature">Identidad visual & branding</div>
+        <div class="pdetail-feature">Catálogo digital de productos</div>
+        <div class="pdetail-feature">Estrategia de redes sociales</div>
+        <div class="pdetail-feature">Moda circular / sustentable</div>
+      </div>
+      <button class="expand-btn" onclick="openModal('modal-2z')">Ver detalles ↗</button>
+    </div>
+
+    <!-- VetExotic -->
+    <div class="pdetail-card">
+      <div class="pdetail-label">Proyecto 02 — Marketing 360°</div>
+      <div class="pdetail-name"><em>VetExotic</em></div>
+      <div class="pdetail-desc">Estrategia integral de marketing 360° para veterinaria de animales exóticos. Proyecto final de tecnicatura.</div>
+      <div class="pdetail-features">
+        <div class="pdetail-feature">Branding & identidad completa</div>
+        <div class="pdetail-feature">SEO, SEM, Email Marketing</div>
+        <div class="pdetail-feature">App + Landing Page</div>
+        <div class="pdetail-feature">Plan de redes sociales</div>
+      </div>
+      <div class="pdetail-palette">
+        <div class="pcolor" style="background:#d4dae3;"></div>
+        <div class="pcolor" style="background:#9db3ca;"></div>
+        <div class="pcolor" style="background:#405f7a;"></div>
+        <div class="pcolor" style="background:#0d2847;"></div>
+      </div>
+      <button class="expand-btn" onclick="openModal('modal-vetexotic')">Ver detalles ↗</button>
+    </div>
+
+    <!-- App Ganga -->
+    <div class="pdetail-card">
+      <div class="pdetail-label">Proyecto 03 — App / UI Design</div>
+      <div class="pdetail-name"><em>App Ganga</em></div>
+      <div class="pdetail-desc">Diseño de interfaz para una aplicación de descuentos. UX centrada en la comodidad del usuario.</div>
+      <div class="pdetail-features">
+        <div class="pdetail-feature">Diseño UI / UX en Figma</div>
+        <div class="pdetail-feature">Prototipo interactivo</div>
+        <div class="pdetail-feature">Identidad visual de app</div>
+        <div class="pdetail-feature">Arquitectura de información</div>
+      </div>
+      <button class="expand-btn" onclick="openModal('modal-ganga')">Ver detalles ↗</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contacto">
+  <div>
+    <div class="section-label reveal">Contacto</div>
+    <h2 class="contact-heading reveal reveal-delay-1">Trabajemos<br><em>juntos.</em></h2>
+    <p class="contact-sub reveal reveal-delay-2">¿Tenés un proyecto en mente? Me encantaría escucharte y ayudarte a construir tu presencia digital.</p>
+    <div class="contact-links reveal reveal-delay-3">
+      <a href="tel:1140476833" class="contact-link"><div class="contact-link-icon">📱</div>11 4047 - 6833</a>
+      <a href="mailto:correozahira@gmail.com" class="contact-link"><div class="contact-link-icon">✉️</div>correozahira@gmail.com</a>
+      <a href="https://www.behance.net/zahiranuez" target="_blank" class="contact-link"><div class="contact-link-icon">🎨</div>behance.net/zahiranuez</a>
+    </div>
+  </div>
+  <div class="contact-right reveal reveal-delay-2">
+    <a href="mailto:correozahira@gmail.com" class="cta-big">Escribime ↗</a>
+    <a href="https://www.behance.net/zahiranuez" target="_blank" class="cta-behance">Ver Portfolio en Behance ↗</a>
+    <div class="availability"><div class="avail-dot"></div>Disponible para proyectos freelance</div>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">© 2024 Zahira Nuñez. Todos los derechos reservados.</span>
+  <span class="footer-name">ZAHIRA NUÑEZ — MARKETING DIGITAL</span>
+</footer>
+
+<!-- ===== MODALS ===== -->
+
+<!-- Modal 2Z -->
+<div class="modal-overlay" id="modal-2z">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-label">Proyecto 01 — Indumentaria</div><div class="modal-title"><em>2Z' Style</em></div></div>
+      <button class="modal-close" onclick="closeModal('modal-2z')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Descripción del proyecto</div>
+        <p class="modal-text">2Z' Style es una marca digital de indumentaria argentina con identidad juvenil y amigable con el medio ambiente. Surge como un proyecto real de moda circular, apostando por piezas únicas, el reuso de materiales y un vínculo auténtico con sus clientes a través de las redes sociales bajo el concepto de "moda circular".</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Alcance del trabajo</div>
+        <div class="modal-grid">
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Identidad visual & branding</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Diseño de catálogo digital</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Estrategia de redes sociales</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Comunicación sustentable</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Moda circular / upcycling</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Creación de contenido visual</div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Concepto creativo</div>
+        <p class="modal-text">La marca conecta con una audiencia joven y comprometida, comunicando sus valores de sostenibilidad de forma auténtica. La identidad visual refleja energía, originalidad y conciencia ambiental, diferenciándose del mercado de moda convencional con una propuesta de piezas únicas y responsables.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Plataformas y entregables</div>
+        <div class="modal-tag-list">
+          <span class="modal-tag">Instagram</span>
+          <span class="modal-tag">Catálogo digital</span>
+          <span class="modal-tag">Behance</span>
+          <span class="modal-tag">Adobe Illustrator</span>
+          <span class="modal-tag">Contenido orgánico</span>
+          <span class="modal-tag">Moda circular</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal VetExotic -->
+<div class="modal-overlay" id="modal-vetexotic">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-label">Proyecto 02 — Estrategia Marketing 360°</div><div class="modal-title"><em>VetExotic</em></div></div>
+      <button class="modal-close" onclick="closeModal('modal-vetexotic')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Descripción</div>
+        <p class="modal-text">Estrategia integral de Marketing 360° para VetExotic, veterinaria especializada en animales exóticos de Buenos Aires. Proyecto final de tecnicatura desarrollado en equipo: Zahira Nuñez (Estratega), Barbosa (Creativa), Cristian Ezequiel (Contenidista) y Luis Zorrilla (Analista). Combina branding, innovación digital, campañas publicitarias segmentadas y alianzas estratégicas para posicionar la marca como referente en el cuidado de mascotas exóticas.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Análisis de mercado</div>
+        <div class="modal-kpi-grid">
+          <div class="modal-kpi"><div class="modal-kpi-num">70%</div><div class="modal-kpi-label">Dueños sin acceso a atención especializada</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">+25%</div><div class="modal-kpi-label">Crecimiento del mercado en 3 años</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">60%</div><div class="modal-kpi-label">Del segmento representado por reptiles</div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Identidad de marca</div>
+        <p class="modal-text" style="margin-bottom:16px;">Sistema visual que combina elegancia y profesionalismo. Tipografías TAN Tangkiwood + Garet para comunicación clara y sofisticada. Paleta de azules que refuerza confianza, empatía y expertise veterinario especializado.</p>
+        <div class="modal-palette">
+          <div class="modal-pcolor" style="background:#d4dae3;"></div>
+          <div class="modal-pcolor" style="background:#9db3ca;"></div>
+          <div class="modal-pcolor" style="background:#405f7a;"></div>
+          <div class="modal-pcolor" style="background:#0d2847;"></div>
+          <span style="font-size:0.72rem;color:var(--muted);margin-left:8px;">TAN Tangkiwood + Garet</span>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Estrategias digitales implementadas</div>
+        <div class="modal-grid">
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> SEO on-page, técnico y off-page</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> SEM — Google Ads & Meta Ads</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Plan redes: IG, TikTok, LinkedIn, FB</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Email Marketing — flujos personalizados</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Influencer Marketing (600k seguidores)</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> App móvil — turnos & e-commerce</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Landing page optimizada</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Plan de contingencia reputacional</div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">KPIs y resultados proyectados</div>
+        <div class="modal-kpi-grid">
+          <div class="modal-kpi"><div class="modal-kpi-num">3:1</div><div class="modal-kpi-label">ROI proyectado Meta Ads</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">150</div><div class="modal-kpi-label">Citas mensuales generadas</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">+30%</div><div class="modal-kpi-label">Incremento en engagement</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">2.5%</div><div class="modal-kpi-label">CTR objetivo Google Ads</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">+20%</div><div class="modal-kpi-label">Tráfico web mensual</div></div>
+          <div class="modal-kpi"><div class="modal-kpi-num">25%</div><div class="modal-kpi-label">Tasa de apertura Email</div></div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Herramientas & entregables</div>
+        <div class="modal-tag-list">
+          <span class="modal-tag">Figma</span>
+          <span class="modal-tag">Adobe Illustrator</span>
+          <span class="modal-tag">Google Ads</span>
+          <span class="modal-tag">Meta Business</span>
+          <span class="modal-tag">Tableau</span>
+          <span class="modal-tag">Diagrama de Gantt</span>
+          <span class="modal-tag">Análisis FODA</span>
+          <span class="modal-tag">Storyboard</span>
+          <span class="modal-tag">Wireframes</span>
+          <span class="modal-tag">Motion App</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Ganga -->
+<div class="modal-overlay" id="modal-ganga">
+  <div class="modal">
+    <div class="modal-header">
+      <div><div class="modal-label">Proyecto 03 — UI / UX Design</div><div class="modal-title"><em>App Ganga</em></div></div>
+      <button class="modal-close" onclick="closeModal('modal-ganga')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-section">
+        <div class="modal-section-title">Descripción del proyecto</div>
+        <p class="modal-text">App Ganga es un proyecto de diseño UI/UX para una aplicación de descuentos que conecta usuarios con ofertas en calzados, restaurantes, joyería y más. La propuesta combina una identidad visual llamativa — rojo intenso sobre fondos neutros — con una arquitectura de información pensada para la comodidad del usuario, prototipada completamente en Figma.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Alcance del diseño</div>
+        <div class="modal-grid">
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Diseño UI / UX completo en Figma</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Prototipo interactivo navegable</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Identidad visual & sistema de diseño</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Arquitectura de información</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Flujo de onboarding y registro</div>
+          <div class="modal-pill"><span class="modal-pill-icon">◈</span> Sección de cupones y categorías</div>
+        </div>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Estructura de la aplicación</div>
+        <p class="modal-text">La app cuenta con cinco secciones principales accesibles desde la barra de navegación inferior: Inicio, Tips, Cupones, Blog y Perfil. Las categorías principales — Calzados, Restaurantes y Joyas — están destacadas en el home para facilitar la exploración. El sistema de colores apuesta por rojo intenso para generar urgencia y acción en el usuario.</p>
+      </div>
+      <div class="modal-section">
+        <div class="modal-section-title">Herramientas y entregables</div>
+        <div class="modal-tag-list">
+          <span class="modal-tag">Figma</span>
+          <span class="modal-tag">UI Design</span>
+          <span class="modal-tag">UX Research</span>
+          <span class="modal-tag">Prototipo interactivo</span>
+          <span class="modal-tag">Sistema de diseño</span>
+          <span class="modal-tag">Flujos de usuario</span>
+          <span class="modal-tag">Identidad visual</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.transform = `translate(${mx-5}px,${my-5}px)`;
+  });
+  (function animateRing() {
+    rx += (mx-rx)*0.12; ry += (my-ry)*0.12;
+    ring.style.transform = `translate(${rx-18}px,${ry-18}px)`;
+    requestAnimationFrame(animateRing);
+  })();
+  document.querySelectorAll('a,button,.tool-card,.pdetail-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { ring.style.width='56px'; ring.style.height='56px'; ring.style.opacity='0.3'; });
+    el.addEventListener('mouseleave', () => { ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='0.6'; });
+  });
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        e.target.querySelectorAll('.skill-bar').forEach(b => { b.style.transform=`scaleX(${b.getAttribute('data-width')})`; });
+      }
+    });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow=''; }
+  document.querySelectorAll('.modal-overlay').forEach(o => {
+    o.addEventListener('click', function(e) { if(e.target===this) closeModal(this.id); });
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id));
+  });
+</script>
+</body>
+</html>
